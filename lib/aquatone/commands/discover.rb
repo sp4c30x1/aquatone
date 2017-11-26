@@ -144,13 +144,17 @@ module Aquatone
       def write_to_hosts_file
         @hosts_file_contents = ""
         @host_dictionary.each_pair do |host, ip|
-          @hosts_file_contents += "#{host},#{ip}\n"
+        @hosts_file_contents += "#{host},#{ip}\n"
+        #i think should be necessary if i want to pass a list to nmap ? what do you think x) ?
+        @hosts_ips =+ "#{ip}"
         end
         @assessment.write_file("hosts.txt", @hosts_file_contents)
         @assessment.write_file("hosts.json", @host_dictionary.to_json)
+        @assessment.write_file("ips.txt", @hosts_ips)
         output("Wrote #{bold(@host_dictionary.keys.count)} hosts to:\n\n")
         output(" - #{bold('file://' + File.join(@assessment.path, 'hosts.txt'))}\n")
         output(" - #{bold('file://' + File.join(@assessment.path, 'hosts.json'))}\n")
+        output(" - #{bold('file://' + File.join(@assessment.path, 'ips.txt'))}\n")
       end
 
       def random_string
